@@ -15,7 +15,6 @@ This script tests the 8 Assignment 2 functions:
 
 import imageProcessing as ip
 import matplotlib.pyplot as plt
-import matplotlib
 import numpy as np
 import requests
 

@@ -50,6 +50,16 @@ except IOError:
     print("Saving ", filename)
     open(filename, "wb").write(x.content)
 
+try:
+    f = open("showImageCorrect.png")
+except IOError:
+    print("showImageCorrect.png not found - downloading")
+    url = "https://github.com/bschulznewy/a2Testing/raw/main/showImageCorrect.png"
+    x = requests.get(url)
+    filename = url.rsplit('/',1)[1]
+    print("Saving ", filename)
+    open(filename, "wb").write(x.content)
+
 print("All prerequesite files downloaded")
 
 if checkLoadImage == True:

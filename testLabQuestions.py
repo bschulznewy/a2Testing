@@ -18,6 +18,7 @@ small.png, smallImage.npy, Hopper.jpg, and showImageCorrect.png can all be found
 import imageProcessing as ip
 import matplotlib.pyplot as plt
 import numpy as np
+import requests
 
 # Make the True and False as-needed to speed up run time
 # ie: don't try to test functions you haven't written
@@ -26,6 +27,30 @@ checkLoadImage = True
 checkSaveImage = True   # Assumes that loadImage() is working correctly!
 checkColourspace = True # Checks both rgb2hsl() and hsl2rgb() at the same time
 checkShowImage = True   # Requires loadImage() to be working correctly
+
+print("Testing if smallImage.npy exists and downloading if necessary")
+
+try:
+    f = open("smallImage.npy")
+except IOError:
+    print("smallImage.npy not found - downloading")
+    url = "https://github.com/bschulznewy/a2Testing/raw/main/smallImage.npy"
+    x = requests.get(url)
+    filename = url.rsplit('/',1)[1]
+    print("Saving ", filename)
+    open(filename, "wb").write(x.content)
+
+try:
+    f = open("small.png")
+except IOError:
+    print("small.png not found - downloading")
+    url = "https://github.com/bschulznewy/a2Testing/raw/main/small.png"
+    x = requests.get(url)
+    filename = url.rsplit('/',1)[1]
+    print("Saving ", filename)
+    open(filename, "wb").write(x.content)
+
+print("All prerequesite files downloaded")
 
 if checkLoadImage == True:
     print("Checking image loading")

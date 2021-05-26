@@ -41,6 +41,16 @@ except IOError:
     open(filename, "wb").write(x.content)
 
 try:
+    f = open("Hopper.tiff")
+except IOError:
+    print("smallImage.npy not found - downloading")
+    url = "https://github.com/bschulznewy/a2Testing/raw/main/Hopper.tiff"
+    x = requests.get(url)
+    filename = url.rsplit('/',1)[1]
+    print("Saving ", filename)
+    open(filename, "wb").write(x.content)
+
+try:
     f = open("small.png")
 except IOError:
     print("small.png not found - downloading")

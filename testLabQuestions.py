@@ -64,9 +64,9 @@ print("All prerequesite files downloaded")
 
 if checkLoadImage == True:
     print("Checking image loading")
-    x = ip.loadImage("Hopper.jpg")
+    x = ip.loadImage("Hopper.tiff")
     if x.size != 783363:
-        print("Loading Hopper.jpg did not return an image of the correct resolution")
+        print("Loading Hopper.tiff did not return an image of the correct resolution")
         print("Expected (511, 511, 3)")
         print("Got ", x.size)
     x = ip.loadImage("small.png")
@@ -171,13 +171,15 @@ if checkColourspace == True:
 
 if checkShowImage == True:
     print("Checking showImage()")
-    x = ip.loadImage("Hopper.jpg")
+    x = ip.loadImage("Hopper.tiff")
     x[:,:,0] += 100
     x[:,:,1] -= 10
     ip.showImage(x)
     plt.savefig("showImageResult.png")
     expected = ip.loadImage("showImageCorrect.png")
     got = ip.loadImage("showImageResult.png")
+
+    print("ShowImage debug diff: ", np.linalg.norm(expected - got))
 
     if np.linalg.norm(expected - got) > 2000:
         print("showImage error: Did not get expected plot image. This could be due to a lack of clipping, lack of datatype conversion, or lack of plt.axis('off')")

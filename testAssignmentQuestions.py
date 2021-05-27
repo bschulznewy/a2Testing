@@ -16,6 +16,13 @@ This script tests the 8 Assignment 2 functions:
 import imageProcessing as ip
 import matplotlib.pyplot as plt
 import numpy as np
+
+try:
+  import requests
+except ImportError:
+  print("Trying to Install required module: requests\n")
+  os.system('python -m pip install requests')
+
 import requests
 
 # Make the True and False as-needed to speed up run time

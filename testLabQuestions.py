@@ -8,7 +8,6 @@ Note that this script requires loadImage() to be working before saveImage() or s
 REQUIREMENTS:
 
     * small.png must be in the same folder to check loadImage()
-    * smallImage.npy must be in the same folder to check loadImage()
     * Hopper.jpg must be in the same folder to check showImage()
     * showImageCorrect.png must be in the same folder to check showImage()
 
@@ -18,6 +17,14 @@ small.png, smallImage.npy, Hopper.jpg, and showImageCorrect.png can all be found
 import imageProcessing as ip
 import matplotlib.pyplot as plt
 import numpy as np
+
+import os
+
+try:
+  import requests
+except ImportError:
+  print("Trying to Install required module: requests\n")
+  os.system('python -m pip install requests')
 import requests
 
 # Make the True and False as-needed to speed up run time
@@ -27,18 +34,6 @@ checkLoadImage = True
 checkSaveImage = True   # Assumes that loadImage() is working correctly!
 checkColourspace = True # Checks both rgb2hsl() and hsl2rgb() at the same time
 checkShowImage = True   # Requires loadImage() to be working correctly
-
-print("Testing if smallImage.npy exists and downloading if necessary")
-
-try:
-    f = open("smallImage.npy")
-except IOError:
-    print("smallImage.npy not found - downloading")
-    url = "https://github.com/bschulznewy/a2Testing/raw/main/smallImage.npy"
-    x = requests.get(url)
-    filename = url.rsplit('/',1)[1]
-    print("Saving ", filename)
-    open(filename, "wb").write(x.content)
 
 try:
     f = open("Hopper.tiff")
@@ -80,7 +75,7 @@ if checkLoadImage == True:
         print("Expected (511, 511, 3)")
         print("Got ", x.size)
     x = ip.loadImage("small.png")
-    xTrue = np.load("smallImage.npy")
+    xTrue = np.float64(np.array( [[[255,0,0],[0,255,0],[0,0,255]],[[255,255,255,],[120,120,120],[0,0,0]],[[161,140,167],[104,143,145],[189,181,107]]] ))
     if x.dtype != np.float64:
         print(f"LoadImage() error: data type {x.dtype} not np.float64")
         quit()
@@ -98,7 +93,7 @@ if checkLoadImage == True:
 
 if checkSaveImage == True:
     print("Checking image saving")
-    xTrue = np.round(np.load("smallImage.npy"))
+    xTrue = np.float64(np.array( [[[255,0,0],[0,255,0],[0,0,255]],[[255,255,255,],[120,120,120],[0,0,0]],[[161,140,167],[104,143,145],[189,181,107]]] ))
     ip.saveImage(xTrue, "smallTestSave.tiff", scale=False)
     x = ip.loadImage("smallTestSave.tiff")
     if np.array_equal(x, xTrue) == False:

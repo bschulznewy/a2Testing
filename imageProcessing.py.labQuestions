@@ -1,0 +1,86 @@
+import numpy as np
+import matplotlib.image as img
+import matplotlib.pyplot as plt
+
+def loadImage(filename):
+    x = img.imread(filename).copy()
+    if type(x[0,0,0]) == np.float32:
+        x = np.float64(x)*255
+    else:
+        x = np.float64(x)
+    (rows, cols, colours) = x.shape
+    if colours == 4:
+        x = x[:,:,0:3]
+    return x
+
+def saveImage(imageData, filename, scale=False, format="RGB"):
+    if format == "HSL":
+        imageData = hsl2rgb(imageData)
+    if scale == True:
+        imageData = imageData - np.min(imageData)
+        imageData = imageData/np.max(imageData)*255
+    else:
+        imageData[imageData > 255] = 255
+        imageData[imageData < 0] = 0
+    plt.imsave(filename, np.uint8(np.round(imageData)))
+    return None
+
+def showImage(imageData):
+    tmp = imageData.copy()
+    tmp[tmp > 255] = 255
+    tmp[tmp < 0] = 0
+    tmp = np.uint8(tmp)
+    plt.imshow(tmp)
+    plt.axis('off')
+
+def rgb2hsl(imageData):
+    (rows, cols, colorLength) = imageData.shape
+    for row in range(0,rows):
+        for col in range(0,cols):
+            (R, G, B) = imageData[row,col,:]
+
+            (R2, G2, B2) = np.array((R, G, B))/255
+
+            Cmax = np.max(np.array((R2, G2, B2)))
+            Cmin = np.min(np.array((R2, G2, B2)))
+            D = Cmax - Cmin
+            if D == 0:
+                H = 0
+            elif Cmax == R2:
+                H = 60*np.mod((G2-B2)/D,6)
+            elif Cmax == G2:
+                H = 60*((B2-R2)/D + 2)
+            else:
+                H = 60*((R2-G2)/D + 4)
+            L = (Cmax + Cmin)/2
+            if D == 0:
+                S = 0
+            else:
+                S = D/( 1- np.abs(2*L-1))
+
+            imageData[row,col,:] = (H, S, L)
+    return imageData
+
+def hsl2rgb(imageData):
+    (rows, cols, colorLength) = imageData.shape
+    for row in range(0,rows):
+        for col in range(0,cols):
+            (H, S, L) = imageData[row,col,:]
+            C = (1-np.abs(2*L-1))*S
+            X = C*(1-np.abs(np.mod(H/60,2)-1))
+            m = L-C/2
+            if 0 <= H < 60:
+                (R2, G2, B2) = (C,X,0)
+            if 60 <= H < 120:
+                (R2, G2, B2) = (X,C,0)
+            if 120 <= H < 180:
+                (R2, G2, B2) = (0,C,X)
+            if 180 <= H < 240:
+                (R2, G2, B2) = (0,X,C)
+            if 240 <= H < 300:
+                (R2, G2, B2) = (X,0,C)
+            if 300 <= H < 360:
+                (R2, G2, B2) = (C,0,X)
+            (R,G,B) = ( (R2+m)*255, (G2+m)*255, (B2+m)*255 )
+            imageData[row,col,:] = (R,G,B)
+    return imageData

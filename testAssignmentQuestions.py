@@ -344,6 +344,7 @@ if checkHistogram:
     print("histogram() tests PASSED")
 
 if checkUnsharpMask:
+    plt.close('all')
     print("Double checking saveImage()")
     xTrue = np.array( [[ [-1, 256, -1], [0,0,0], [256, 256, 256] ]])
     ip.saveImage(xTrue, "smallTestSave.png", scale=False)

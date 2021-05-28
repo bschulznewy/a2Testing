@@ -54,7 +54,7 @@ except IOError:
 try:
     f = open("hist_R.tiff")
 except IOError:
-    print("Hopper.tiff not found - downloading all reference images")
+    print("hist_R.tiff not found - downloading all reference images")
     urls = ['https://github.com/bschulznewy/a2Testing/raw/main/Hopper.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_B.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_G.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_L.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_L_log.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_R.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_R_log.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/unsharp-defaults.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/unsharp-r2a100.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/unsharp-r50.tiff']
     for url in urls:
         x = requests.get(url)

@@ -51,6 +51,18 @@ except IOError:
         print("Saving ", filename)
         open(filename, "wb").write(x.content)
 
+try:
+    f = open("hist_R.tiff")
+except IOError:
+    print("Hopper.tiff not found - downloading all reference images")
+    urls = ['https://github.com/bschulznewy/a2Testing/raw/main/Hopper.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_B.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_G.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_L.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_L_log.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_R.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/hist_R_log.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/unsharp-defaults.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/unsharp-r2a100.tiff', 'https://github.com/bschulznewy/a2Testing/raw/main/unsharp-r50.tiff']
+    for url in urls:
+        x = requests.get(url)
+        filename = url.rsplit('/',1)[1]
+        print("Saving ", filename)
+        open(filename, "wb").write(x.content)
+
+
 if checkBrightness:
     x = np.float64(np.random.randint(0,255, size=(10,10,3)))
     xNew = ip.brightness(x.copy(), 1000)

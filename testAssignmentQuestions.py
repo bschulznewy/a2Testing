@@ -108,7 +108,7 @@ if checkSaturation:
     xNew = ip.saturation(x.copy(), 64)
     tmp = xNew/x
     tmp = np.uint8(tmp)
-    if (tmp[:,:,1] != 64).any() or (tmp[:,:,0] != 1).any() or (tmp[:,:,2] != 1).any:
+    if (tmp[:,:,1] != 64).any() or (tmp[:,:,0] != 1).any() or (tmp[:,:,2] != 1).any == False:
         print("Saturation error")
         print("Expected:")
         x[:,:,1]*=64
